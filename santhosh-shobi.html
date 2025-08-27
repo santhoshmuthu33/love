@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Love Countdown 💖</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@600&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      background: 
+        linear-gradient(rgba(255, 154, 158, 0.6), rgba(250, 208, 196, 0.6)),
+        url('WhatsApp Image 2025-07-29 at 20.27.52.jpeg');
+      background-size: cover; /* Better scaling */
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(2rem, 5vw, 3.5rem); /* Responsive font */
+      margin: 20px 0 10px;
+      color: #fff;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    }
+
+    #targetDateDisplay {
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      margin-bottom: 40px;
+      color: #220202;
+    }
+
+    .timer-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 15px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .love-box {
+      background: radial-gradient(circle at 30% 30%, #f0d6e9, #ff6b81);
+      border-radius: 20px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 6px 25px rgba(255, 105, 135, 0.3);
+      animation: heartbeat 1.5s ease-in-out infinite;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      min-height: 120px;
+    }
+
+    .heart-icon {
+      font-size: 1.5rem;
+      position: absolute;
+      top: 8px;
+    }
+
+    .love-box h2 {
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      font-family: monospace;
+      margin: 25px 0 5px;
+      color: #fff;
+    }
+
+    .label {
+      font-size: clamp(0.8rem, 2vw, 1rem);
+      color: #fff;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      25% { transform: scale(1.05); }
+      50% { transform: scale(0.95); }
+      75% { transform: scale(1.03); }
+    }
+
+    /* Floating hearts */
+    .hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+    }
+
+    .floating-heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center;
+      background-size: contain;
+      opacity: 0.7;
+      animation: floatHearts linear forwards;
+    }
+
+    @keyframes floatHearts {
+      0% {
+        transform: translateY(100vh) scale(0.5);
+        opacity: 0;
+      }
+      50% { opacity: 1; }
+      100% {
+        transform: translateY(-10vh) scale(1.2);
+        opacity: 0;
+      }
+    }
+
+    /* Mobile tweaks */
+    @media(max-width: 600px) {
+      .timer-container {
+        grid-template-columns: repeat(2, 1fr); /* stack better */
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Countdown to Our Special Day 💞</h1>
+  <h3 id="targetDateDisplay"></h3>
+
+  <div class="timer-container">
+    <div class="love-box"><div class="heart-icon">❤️</div><h2 id="days">--</h2><div class="label">Day</div></div>
+    <div class="love-box"><div class="heart-icon">❤️</div><h2 id="hours">--</h2><div class="label">Hour(s)</div></div>
+    <div class="love-box"><div class="heart-icon">❤️</div><h2 id="minutes">--</h2><div class="label">Minute(s)</div></div>
+    <div class="love-box"><div class="heart-icon">❤️</div><h2 id="seconds">--</h2><div class="label">Second(s)</div></div>
+  </div>
+
+  <div class="hearts" id="hearts"></div>
+
+  <script>
+    const targetDate = new Date("2025-08-29T04:30:00");
+    document.getElementById("targetDateDisplay").textContent =
+      `${targetDate.toDateString()}`;
+
+    function updateCountdown() {
+      const now = new Date();
+      const diff = targetDate - now;
+
+      if (diff <= 0) {
+        document.querySelector(".timer-container").innerHTML = "<h2>💘 It's Time! 💘</h2>";
+        return;
+      }
+
+      const totalSeconds = Math.floor(diff / 1000);
+      const totalMinutes = Math.floor(totalSeconds / 60);
+      const totalHours   = Math.floor(totalMinutes / 60);
+      const totalDays    = Math.floor(totalHours / 24);
+      const totalWeeks   = Math.floor(totalDays / 7);
+
+      const seconds = totalSeconds % 60;
+      const minutes = totalMinutes % 60;
+      const hours   = totalHours % 24;
+      const days    = totalDays % 7;
+
+      //document.getElementById("weeks").textContent = totalWeeks;
+      document.getElementById("days").textContent  = totalDays;
+      document.getElementById("hours").textContent = hours;
+      document.getElementById("minutes").textContent = minutes;
+      document.getElementById("seconds").textContent = seconds;
+    }
+
+    function spawnHearts() {
+      const heartsContainer = document.getElementById("hearts");
+      const heart = document.createElement("div");
+      heart.className = "floating-heart";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = (6 + Math.random() * 5) + "s";
+      heart.style.width = heart.style.height = (15 + Math.random() * 20) + "px";
+      heartsContainer.appendChild(heart);
+
+      // cleanup after animation
+      setTimeout(() => heart.remove(), 10000);
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+    setInterval(spawnHearts, 800);
+  </script>
+</body>
+</html>
